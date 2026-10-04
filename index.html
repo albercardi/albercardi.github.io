@@ -1,7 +1,275 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dra. Albertina Cardinale, Médica Oftalmóloga en Rosario.">
+  <title>Dra. Albertina Cardinale | Oftalmología</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #202624;
+      --muted: #69716e;
+      --accent: #246d68;
+      --line: #dce4e1;
+      --paper: #fcfdfc;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "DM Sans", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 28px 52px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .specialty {
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 23px;
+    }
+
+    .header-link {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-decoration: none;
+      text-transform: uppercase;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 3px;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .header-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 58px 30px 19px;
+      text-align: center;
+    }
+
+    .prefix {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--accent);
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(22px, 2.2vw, 29px);
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(38px, 4.5vw, 60px);
+      font-weight: 500;
+      letter-spacing: -0.045em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .role {
+      margin: 17px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      margin: 28px auto 0;
+      background: var(--accent);
+    }
+
+    .bio {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 30px 32px 58px;
+    }
+
+    .bio-heading {
+      margin: 0 0 28px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .bio p {
+      margin: 0 0 27px;
+      color: #3d4542;
+      font-size: 17px;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    .bio p:last-of-type { margin-bottom: 0; }
+
+    .cta-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 32px 78px;
+      text-align: center;
+    }
+
+    .cta-section::before {
+      content: "";
+      display: block;
+      width: 48px;
+      height: 1px;
+      margin: 0 auto 28px;
+      background: var(--accent);
+    }
+
+    .cta-section p {
+      max-width: 510px;
+      margin: 0 auto 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .button {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 14px 24px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .button:hover {
+      background: #1d5955;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      padding: 28px 32px 32px;
+      text-align: center;
+    }
+
+    footer p { margin: 0 0 7px; }
+    footer p:last-child { margin-bottom: 0; }
+
+    .footer-map,
+    .footer-phone a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid #b8c6c0;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .footer-map:hover,
+    .footer-phone a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .site-header { padding: 22px 24px; }
+      .header-links { gap: 13px; }
+      .header-link { font-size: 11px; letter-spacing: 0.04em; }
+      .hero { padding: 49px 20px 13px; }
+      h1 {
+        font-size: clamp(31px, 9vw, 45px);
+        white-space: normal;
+      }
+      .bio { padding: 25px 26px 49px; }
+      .bio-heading { margin-bottom: 25px; }
+      .bio p { font-size: 16px; }
+      .cta-section { padding: 0 26px 68px; }
+      footer { padding: 26px 24px; }
+    }
+  </style>
+</head>
 <body>
-<h3>Hello World</h3>
-<p>I'm hosted with GitHub Pages.</p>
+  <header class="site-header">
+    <span class="specialty">Oftalmología · Rosario</span>
+    <nav class="header-links" aria-label="Navegación principal">
+      <a class="header-link" href="#bio">Bio</a>
+      <a class="header-link" href="#articulos">Artículos</a>
+      <a class="header-link" href="lugar-de-atencion.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="nombre">
+      <div>
+        <span class="prefix">Dra.</span>
+        <h1 id="nombre">Albertina Cardinale</h1>
+        <p class="role">Médica Oftalmóloga</p>
+      </div>
+      <div class="divider" aria-hidden="true"></div>
+    </section>
+
+    <section class="bio" id="bio" aria-labelledby="sobre-mi">
+      <h2 class="bio-heading" id="sobre-mi">Sobre mí</h2>
+      <p>Soy médica, graduada de la Facultad de Ciencias Médicas de la Universidad Nacional de Rosario. Realicé mi formación de especialidad y mi residencia en Oftalmología en el Hospital Provincial de Rosario. Durante esos años confirmé mi interés por la oftalmología y también por una manera de atender que combine el estudio y el rigor con la escucha, la cercanía y el respeto por la historia de cada paciente.</p>
+      <p>Soy miembro de la Sociedad de Oftalmología de Rosario y me desempeño como docente en el Instituto Universitario de Rosario. La docencia representa para mí el desafío y la responsabilidad de acompañar la formación de futuros médicos y, a la vez, una oportunidad de seguir aprendiendo, intercambiando ideas y creciendo dentro de un ámbito académico.</p>
+      <p>Mi actividad asistencial se desarrolla principalmente en el área de la oftalmología general, en articulación con otras áreas de la especialidad cuando cada caso lo requiere. Además, participo en proyectos de investigación, cursos, jornadas y congresos, que me permiten mantenerme en contacto con los avances de la especialidad y enriquecer mi práctica cotidiana.</p>
+      <p>Todo ese camino acompaña mi manera de estar en cada consulta. Intento dedicar el tiempo necesario para escuchar, conocer la historia de cada persona y acompañarla de cerca. Para mí, ahí también está una parte importante de ejercer y disfrutar la medicina.</p>
+    </section>
+
+    <section class="cta-section" id="contacto" aria-label="Contacto">
+      <p>Para solicitar una consulta o realizar una consulta administrativa, podés comunicarte por los canales de contacto del consultorio.</p>
+      <a class="button" href="tel:+54341421770">Solicitar una consulta</a>
+    </section>
+
+    <section id="articulos" aria-label="Artículos"></section>
+  </main>
+
+  <footer>
+    <p>Dra. Albertina Cardinale · Médica Oftalmóloga</p>
+    <p>
+      <a class="footer-map" href="https://www.google.com/maps/search/?api=1&query=Oro%C3%B1o%201003%2C%20Rosario%2C%20Santa%20Fe%2C%20Argentina" target="_blank" rel="noopener noreferrer">Oroño 1003, Rosario</a>
+      <span aria-hidden="true"> · </span>
+      <span class="footer-phone">Tel.: <a href="tel:+54341421770">341 421770</a></span>
+    </p>
+  </footer>
 </body>
 </html>
