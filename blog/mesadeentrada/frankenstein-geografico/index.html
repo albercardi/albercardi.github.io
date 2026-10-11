@@ -134,12 +134,17 @@
       margin: 1.6rem 0;
     }
 
-    .back-link {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
+    .back-link a,
+.back-link a:visited {
+  color: var(--muted);
+  text-decoration: none;
+}
 
+.back-link a:hover,
+.back-link a:active {
+  color: #B33820;
+  text-decoration: underline;
+}
     @media (max-width: 720px) {
       body {
         padding: 1.8rem 1.1rem 2.5rem;
