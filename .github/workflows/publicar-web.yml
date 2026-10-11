@@ -1,4 +1,4 @@
-name: Actualizar libros y publicar web
+name: Actualizar libros y peliculas y publicar web
 
 on:
   push:
@@ -17,7 +17,6 @@ concurrency:
 jobs:
   construir:
     runs-on: ubuntu-latest
-
     steps:
       - name: Descargar el repositorio
         uses: actions/checkout@v4
@@ -33,12 +32,38 @@ jobs:
           test -f blog/libros/index.html
           test -s updates/goodreads_library_export.csv
           test -f tools/actualizar_libros.py
+          test -f blog/peliculas/index.html
+          test -s updates/peliculas.csv
+          test -f tools/actualizar_peliculas.py
 
       - name: Actualizar libros
         run: |
           python tools/actualizar_libros.py
           test -s blog/libros/libros.js
           node --check blog/libros/libros.js
+
+      - name: Actualizar peliculas
+        run: |
+          python tools/actualizar_peliculas.py
+          test -s blog/peliculas/peliculas.js
+          node --check blog/peliculas/peliculas.js
+
+      - name: Verificar datos y enlace de peliculas
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+          html = Path("blog/peliculas/index.html").read_text(encoding="utf-8")
+          sources = re.findall(r'<script\b[^>]*\bsrc\s*=\s*[\'"]([^\'"]+)[\'"]', html, flags=re.I)
+          if not any(s.split("?", 1)[0] in ("peliculas.js", "./peliculas.js", "/blog/peliculas/peliculas.js") for s in sources):
+              raise SystemExit("El HTML no carga peliculas.js. Revisar la etiqueta script.")
+          js = Path("blog/peliculas/peliculas.js").read_text(encoding="utf-8")
+          movies = json.JSONDecoder().raw_decode(js.split("const MOVIES =", 1)[1].lstrip())[0]
+          print(f"Titulos preparados para publicar: {len(movies)}")
+          for movie in movies[:5]:
+              print(movie["created"], movie["title"])
+          PY
 
       - name: Preparar GitHub Pages
         uses: actions/configure-pages@v5
@@ -47,6 +72,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/sitio"
           rsync -a --exclude='.git/' --exclude='.github/' --exclude='tools/' --exclude='updates/' ./ "$RUNNER_TEMP/sitio/"
+          cmp blog/peliculas/peliculas.js "$RUNNER_TEMP/sitio/blog/peliculas/peliculas.js"
 
       - name: Subir sitio preparado
         uses: actions/upload-pages-artifact@v3
@@ -56,11 +82,9 @@ jobs:
   publicar:
     needs: construir
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Publicar sitio
         id: deployment
