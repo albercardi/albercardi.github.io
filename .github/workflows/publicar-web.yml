@@ -46,8 +46,22 @@ jobs:
       - name: Preparar archivos del sitio
         run: |
           mkdir -p "$RUNNER_TEMP/sitio"
-          rsync -a \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='tools/' \
-            --exclude='updates/'
+          rsync -a --exclude='.git/' --exclude='.github/' --exclude='tools/' --exclude='updates/' ./ "$RUNNER_TEMP/sitio/"
+
+      - name: Subir sitio preparado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/sitio
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Publicar sitio
+        id: deployment
+        uses: actions/deploy-pages@v4
