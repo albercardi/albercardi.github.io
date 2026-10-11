@@ -1,0 +1,73 @@
+name: Actualizar libros y publicar web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verificar archivos necesarios
+        run: |
+          test -f index.html
+          test -f blog/libros/index.html
+          test -s updates/goodreads_library_export.csv
+          test -f tools/actualizar_libros.py
+
+      - name: Actualizar libros
+        run: |
+          python tools/actualizar_libros.py
+          test -s blog/libros/libros.js
+          node --check blog/libros/libros.js
+
+      # Peliculas: incorporar el paso de generacion cuando
+      # tools/actualizar_peliculas.py este adaptado y probado.
+      # Por ahora se publica blog/peliculas/ tal como esta en el repositorio.
+
+      - name: Preparar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar archivos del sitio
+        run: |
+          mkdir -p "$RUNNER_TEMP/sitio"
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='tools/' \
+            --exclude='updates/' \
+            ./ "$RUNNER_TEMP/sitio/"
+
+      - name: Subir sitio preparado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/sitio
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar sitio
+        id: deployment
+        uses: actions/deploy-pages@v4
